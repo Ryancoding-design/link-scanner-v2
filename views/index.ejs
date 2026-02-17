@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Link Scanner</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; }
+        .container { max-width: 600px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: auto; }
+        input { width: 80%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px; }
+        .result { margin-top: 20px; padding: 15px; border-left: 5px solid #007bff; background: #e9ecef; }
+        .danger { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🔍 Link Scanner</h2>
+        <form action="/scan" method="POST">
+            <input type="text" name="url" placeholder="Masukkan URL (ex: google.com)" required>
+            <button type="submit">Scan</button>
+        </form>
+
+        <% if (result) { %>
+            <div class="result">
+                <% if (result.error) { %>
+                    <p class="danger"><%= result.error %></p>
+                <% } else { %>
+                    <p><strong>URL:</strong> <%= result.url %></p>
+                    <p><strong>Status:</strong> <%= result.status %></p>
+                    <p><strong>Keamanan:</strong> <span class="<%= result.risk === 'BAHAYA' ? 'danger' : '' %>"><%= result.risk %></span></p>
+                    <ul>
+                        <% result.findings.forEach(f => { %>
+                            <li><%= f %></li>
+                        <% }) %>
+                    </ul>
+                <% } %>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>
+
